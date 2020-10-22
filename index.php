@@ -1,4 +1,6 @@
 <?php
+session_start();
+$text = '';
 function processDir($path)
 {
     $dir_handle = opendir($path);
@@ -18,7 +20,7 @@ function processDir($path)
         } elseif (is_file($path . '/' . $name)) {
             $filePath = $path . '/' . $name;
             $stat = stat($filePath);
-            echo '<tr bgcolor="#bdbebd"><td><a href="index.php?delPath='. urlencode($filePath).'" class="delete_btn" onclick="return confirm(\'Are you sure?\')">DELETE</a></td><td>[file]<a href="' . urlencode
+            echo '<tr bgcolor="#f0f8ff"><td><a href="index.php?delPath='. urlencode($filePath).'" class="delete_btn" onclick="return confirm(\'Are you sure?\')">DELETE</a></td><td>[file]<a href="' . urlencode
                 ($filePath) . '">' . $name . '</a> </td><td>' . ($stat['size']) . ' b' . '</td><td>' . $stat['gid'] .
                 '</td><td>' . date('d.m.Y', $stat['mtime']) . '</td><td>' . $stat['mode'] . '</td></tr>';
         }
@@ -48,83 +50,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location:" . $_SERVER['REQUEST_URI']);
 }
 
+ if (isset($_SESSION["sessionUsername"])) :
+     $text .= '
+            <h3 style="float: right" align="right">Welcome ' . $_SESSION['sessionUsername'] . '!</h3>
+            <p align="right"><a href="logout.php"><img src="images/signout.png" width="30"
+                                                       height="30"></a></p>';
+
+            endif;
+
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>File manager</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-    <style type="text/css">
-        .create_btn {
-            text-decoration: none;
-            padding: 2px 5px;
-            background: #5F9EA0;
-            color: white;
-            border-radius: 3px;
-        }
-        .delete_btn {
-            text-decoration: none;
-            padding: 3px;
-            font-size: 10px;
-            color: white;
-            background: #C44737;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .form {
-            width: 45%;
-            margin: 50px auto;
-            text-align: left;
-            padding: 20px;
-            border: 1px solid #bbbbbb;
-            border-radius: 5px;
-        }
-    </style
-
-
+    <link href="style.css" media="screen" rel="stylesheet">
 </head>
 <body>
-
-
-<form class="form" method="post">
-    <a href="http://filemanager.loc:8888"><img src="images/home.png" width="50" height="50"></a>
-    <br>
-    <br>
-    <label for="nameFolder">Please enter "Folder name"!</label><br>
-    <input type="text" size="30" name="nameFolder">
-    <input class="create_btn" type="submit" value="Create folder">
-    <table border="4" bgcolor="#ffffff" bordercolor="#000000">
-
-        <tr>
-            <th>Delete</th>
-            <th>File</th>
-            <th>Size Byte</th>
-            <th>Owner</th>
-            <th>Date</th>
-            <th>Inode</th>
-        </tr>
-
-        <?php processDir($curPath); ?>
-
-    </table>
-
-<!-- Optional JavaScript; choose one of the two! -->
-
-<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-<!-- Option 2: jQuery, Popper.js, and Bootstrap JS
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
--->
+<div class="container mindex">
+    <form method="post">
+        <div style="clear: both">
+            <a href="http://filemanager.loc:8888"><img src="images/home.png" width="50" height="50"></a>
+        <?php echo $text; ?>
+        </div>
+        <hr />
+        <label for="nameFolder">Please enter "Folder name"!</label><br>
+        <input type="text" name="nameFolder">
+        <input class="create_btn" type="submit" value="Create folder"><br>
+        <br>
+        <hr />
+        <br>
+        <table border="4" bordercolor="#000000">
+            <tr>
+                <th>Delete</th>
+                <th>File</th>
+                <th>Size Byte</th>
+                <th>Owner</th>
+                <th>Date</th>
+                <th>Inode</th>
+            </tr>
+            <?php processDir($curPath); ?>
+        </table>
+        <footer class="footer">
+            <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.jpg" width="50"
+                                                                height="50"></a><br>
+            &copy; 2020 All right reserved!
+        </footer>
 </body>
 </html>
