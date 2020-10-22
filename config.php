@@ -3,6 +3,10 @@ define('DB_NAME','filemanager');
 define('DB_USER','admin');
 define('DB_PASW','admin');
 
+$msg = isset($_GET['msg']) ? (string)$_GET['msg'] : '';
+if ($msg) {
+    echo "<h2 class='error'><b>$msg</b></h2>";
+}
 
 try {
     $db = new PDO("mysql:host=localhost;dbname=" . DB_NAME, DB_USER, DB_PASW);
