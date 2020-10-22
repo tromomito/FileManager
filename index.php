@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="container mindex">
+    <hr />
     <form method="post">
         <div style="clear: both">
             <a href="http://filemanager.loc:8888"><img src="images/home.png" width="50" height="50"></a>
@@ -91,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>
             <?php processDir($curPath); ?>
         </table>
+        <br>
+        <hr />
         <footer class="footer">
             <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.jpg" width="50"
                                                                 height="50"></a><br>
