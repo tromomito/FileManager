@@ -1,36 +1,35 @@
 <?php require ('config.php');
-$msg = isset($_GET['msg']) ? (string)$_GET['msg'] : '';
+
 
 if (isset($_POST['register'])) {
     if (!empty($_POST['full_name']) && !empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-        $full_name = trim($_POST['full_name']);
-        $email = trim($_POST['email']);
-        $username = trim($_POST['username']);
-        $password = trim($_POST['password']);
+        $full_name = addslashes(trim($_POST['full_name']));
+        $email = addslashes(trim($_POST['email']));
+        $username = addslashes(trim($_POST['username']));
+        $password = md5(addslashes(trim($_POST['password'])));
         $result = $db->prepare('SELECT * FROM userlist WHERE username = :username');
-        $result->execute(['username' => $username]);
-        if ($result !== true) {
+        $result->execute([':username' => $username]);
+        $count = $result->fetchColumn();
+        if (!$count) {
             $data = $db->prepare('INSERT INTO userlist (full_name, email, username,password) VALUES (:full_name, :email, :username, :password)');
             $data->bindParam(':full_name', $full_name);
             $data->bindParam(':email', $email);
             $data->bindParam(':username', $username);
             $data->bindParam(':password', $password);
             $data->execute();
-            header("Location: http://filemanager.loc:8888/register.php");
-            header("Location: register.php?msg=Account%20Successfully%20Created!");
+            header("Location: register.php");
+            header("Location: register.php?msg=Account%20Successfully%20Created!<br><a href='login.php'>Please%20login!</a>");
 
         } else {
-            header("Location: http://filemanager.loc:8888/register.php");
+            header("Location: register.php");
             header("Location: register.php?msg=That%20username%20already%20exists!%20Please%20try%20another%20one!");
         }
     } else {
-        header("Location: http://filemanager.loc:8888/register.php");
+        header("Location: register.php");
         header("Location: register.php?msg=All%20fields%20are%20required!");
     }
 }
-if ($msg) {
-     echo "<h2 class='error'><b>$msg</b></h2>";
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +58,12 @@ if ($msg) {
                                      value="Register now"></p>
             <p class="regtext">Already Registered?&nbsp;<a href="login.php">Enter username please</a>!</p>
         </form>
+    </div>
+</div>
+<footer class="footer">
+    <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.jpg" width="50"
+                                                        height="50"></a><br>
+    &copy;  2020 All right reserved!
+</footer>
 </body>
 </html>
-
