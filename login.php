@@ -4,16 +4,12 @@ session_start();
 if (isset($_POST["login"])) {
     if (!empty($_POST['username']) && !empty($_POST['password'])) {
         $username = addslashes(trim($_POST['username']));
-        $password = md5(addslashes(trim($_POST['password'])));
-
-        $result = $db->prepare('SELECT * FROM userlist WHERE username LIKE :username AND password LIKE :password LIMIT 1');
-        $result->execute([':username' => $username, ':password' => $password]);
+        $password = addslashes(trim($_POST['password']));
+        $result = $db->prepare('SELECT * FROM userlist WHERE username LIKE :username LIMIT 1');
+        $result->execute([':username' => $username]);
         $count = $result->fetch();
-
         if ($count) {
-            $dbusername = $count['username'];
-            $dbpassword = $count['password'];
-            if (($username == $dbusername) && ($password == $dbpassword)) {
+            if ( password_verify($password,$count['password']) ) {
                 $_SESSION['sessionUsername'] = $username;
                 header("Location: /");
             }
@@ -40,7 +36,7 @@ if (isset($_POST["login"])) {
 <body>
 <div class="container mlogin">
     <div id="login">
-        <h1>Login</h1>
+        <h1>Please sign in</h1>
         <form action="" id="loginform" method="post" name="loginform">
             <p><label for="user_login">User name<br>
                     <input class="input" id="username" name="username" size="20"
@@ -48,8 +44,9 @@ if (isset($_POST["login"])) {
             <p><label for="user_pass">Password<br>
                     <input class="input" id="password" name="password" size="20"
                            type="password" value=""></label></p>
-            <p class="submit"><input class="button" name="login" type="submit" value="Log In"></p>
+            <p class="submit"><input class="button" name="login" type="submit" value="Sign in"></p>
             <p class="regtext">Not registered yet?&nbsp;<a href="register.php">Registration</a>!</p>
+            <p class="regtext">Forgot your password?&nbsp;<a href="recovery.php">Recovery password</a>!</p>
         </form>
     </div>
 </div>
