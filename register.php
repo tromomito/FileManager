@@ -6,7 +6,7 @@ if (isset($_POST['register'])) {
         $full_name = addslashes(trim($_POST['full_name']));
         $email = addslashes(trim($_POST['email']));
         $username = addslashes(trim($_POST['username']));
-        $password = md5(addslashes(trim($_POST['password'])));
+        $password = password_hash((addslashes(trim($_POST['password']))), PASSWORD_BCRYPT);
         $result = $db->prepare('SELECT * FROM userlist WHERE username = :username');
         $result->execute([':username' => $username]);
         $count = $result->fetchColumn();
@@ -67,3 +67,4 @@ if (isset($_POST['register'])) {
 </footer>
 </body>
 </html>
+
