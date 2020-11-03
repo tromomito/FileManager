@@ -3,9 +3,11 @@ define('DB_NAME','filemanager');
 define('DB_USER','admin');
 define('DB_PASW','admin');
 
+$text = '';
+
 $msg = isset($_GET['msg']) ? (string)$_GET['msg'] : '';
 if ($msg) {
-    echo "<h2 class='error'><b>$msg</b></h2>";
+  $text .= '<h2 class="error"><b>' . $msg . '</b></h2> ';
 }
 
 try {
