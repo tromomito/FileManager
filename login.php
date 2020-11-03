@@ -1,7 +1,7 @@
 <?php
 require ('config.php');
 session_start();
-if (isset($_POST["login"])) {
+if (isset($_POST["login"], $_POST['username'], $_POST['password'])) {
     if (!empty($_POST['username']) && !empty($_POST['password'])) {
         $username = addslashes(trim($_POST['username']));
         $password = addslashes(trim($_POST['password']));
@@ -9,18 +9,27 @@ if (isset($_POST["login"])) {
         $result->execute([':username' => $username]);
         $count = $result->fetch();
         if ($count) {
-            if ( password_verify($password,$count['password']) ) {
+            if (password_verify($password, $count['password'])) {
                 $_SESSION['sessionUsername'] = $username;
                 header("Location: /");
+                exit;
             }
-        } else {
+            else {
+                header("Location: login.php");
+                header("Location: login.php?msg=Invalid%20password!");
+                exit;
+            }
+        }
+         else {
             header("Location: login.php");
-            header("Location: login.php?msg=Invalid%20username%20or%20password!");
+            header("Location: login.php?msg=Invalid%20username!");
+            exit;
         }
 
     } else {
         header("Location: login.php");
         header("Location: login.php?msg=All%20fields%20are%20required!");
+        exit;
     }
 }
 ?>
@@ -30,10 +39,11 @@ if (isset($_POST["login"])) {
     <meta charset="utf-8">
     <title>Login File Manager</title>
     <link href="style.css" media="screen" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-          rel='stylesheet' type='text/css'>
 </head>
 <body>
+<div class="header">
+</div>
+<?php echo $text; ?>
 <div class="container mlogin">
     <div id="login">
         <h1>Please sign in</h1>
@@ -50,11 +60,23 @@ if (isset($_POST["login"])) {
         </form>
     </div>
 </div>
-<footer class="footer">
-    <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.jpg" width="50"
-                                                            height="50"></a><br>
-    &copy;  2020 All right reserved!
-</footer>
+    <footer class="footer">
+    <ul class="hr">
+        <li>
+            <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.png" width="30"
+                                                                height="30"></a>
+        </li>
+        <li>
+            <a href="https://twitter.com/tromomito"><img src="images/twitter.png" width="30"
+                                                         height="30"></a>
+        </li>
+        <li>
+            <a href="mailto:tromomito@gmail.com"><img src="images/gmail.png" width="30"
+                                                      height="30"></a>
+        </li>
+    </ul>
+    &copy; <?php echo date("Y"); ?> All right reserved!
+    </footer>
 </body>
 </html>
 
