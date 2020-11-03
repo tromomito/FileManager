@@ -19,14 +19,17 @@ if (isset($_POST['register'])) {
             $data->execute();
             header("Location: register.php");
             header("Location: register.php?msg=Account%20Successfully%20Created!<br><a href='login.php'>Please%20login!</a>");
+            exit;
 
         } else {
             header("Location: register.php");
             header("Location: register.php?msg=That%20username%20already%20exists!%20Please%20try%20another%20one!");
+            exit;
         }
     } else {
         header("Location: register.php");
         header("Location: register.php?msg=All%20fields%20are%20required!");
+        exit;
     }
 }
 
@@ -42,6 +45,9 @@ if (isset($_POST['register'])) {
           rel='stylesheet' type='text/css'>
 </head>
 <body>
+<div class="header">
+</div>
+<?php echo $text; ?>
 <div class="container mregister">
     <div id="login">
         <h1>Registration</h1>
@@ -61,9 +67,21 @@ if (isset($_POST['register'])) {
     </div>
 </div>
 <footer class="footer">
-    <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.jpg" width="50"
-                                                        height="50"></a><br>
-    &copy;  2020 All right reserved!
+    <ul class="hr">
+        <li>
+            <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.png" width="30"
+                                                                height="30"></a>
+        </li>
+        <li>
+            <a href="https://twitter.com/tromomito"><img src="images/twitter.png" width="30"
+                                                         height="30"></a>
+        </li>
+        <li>
+            <a href="mailto:tromomito@gmail.com"><img src="images/gmail.png" width="30"
+                                                      height="30"></a>
+        </li>
+    </ul>
+    &copy; <?php echo date("Y"); ?> All right reserved!
 </footer>
 </body>
 </html>
