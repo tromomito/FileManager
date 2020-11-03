@@ -2,8 +2,12 @@
 	--------------------------------------------------------*/
 body {
     background: #efefef;
-    font-family: 'Open Sans', sans-serif;
-    color: #000000;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+html {
+    min-height:100%;
 }
 
 a {
@@ -18,15 +22,23 @@ h3 {
 
 
 .mlogin {
-    margin: 170px auto 0;
+    margin: 100px auto 0;
 }
 
 .mregister {
     margin: 80px auto 0;
 }
 
+.mrecovery {
+    margin: 80px auto 0;
+}
+
+.mnewpassword {
+    margin: 80px auto 0;
+}
+
 .mindex {
-    margin: 100px auto 0;
+    margin: 30px auto 0;
 }
 
 .error {
@@ -44,25 +56,38 @@ h3 {
     margin-top: 26px;
     color: #777;
 }
-footer {
+
+.footer {
+    background-color: #231f20;
     left: 0; bottom: 0;
-    padding: 8px;
     color: #777;
-    width: 100%;
     text-align: center;
-    overflow:scroll;
+    width: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
 }
 
+.header {
+    margin: 0 auto;
+    padding: 0;
+    top: 0;
+    width: 100%;
+    background: #231f20;
+    height: 80px;
+    display: flex;
+}
 
 
 /*= КОНТЕЙНЕРЫ
 --------------------------------------------------------*/
+
 .container {
     padding: 25px 16px 25px 10px;
     font-weight: 400;
     overflow: hidden;
     width: 550px;
-    height: auto;
+    height: 100%;
     background: #fff;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .13);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .13);
@@ -89,6 +114,18 @@ footer {
     padding-bottom: 15px;
 }
 
+#recovery {
+    width: 320px;
+    margin: auto;
+    padding-bottom: 15px;
+}
+
+#newpassword {
+    width: 320px;
+    margin: auto;
+    padding-bottom: 15px;
+}
+
 .container form .input, .container input[type=text], .container input[type=password], .container input[type=e] {
     background: #fbfbfb;
     font-size: 24px;
@@ -102,6 +139,16 @@ footer {
 
 .container form .input:focus {
     border: 1px solid #5F9EA0;
+}
+
+.hr {
+    margin: 0;
+    padding: 4px;
+}
+.hr li {
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
 }
 
 /*= КНОПКИ
@@ -127,8 +174,9 @@ footer {
 .create_btn {
     text-decoration: none;
     padding: 7px 15px;
-    background: #5F9EA0;
+    background: #231f20;
     color: white;
+    border: none;
     border-radius: 3px;
 }
 
@@ -140,4 +188,27 @@ footer {
     background: #C44737;
     border: none;
     border-radius: 5px;
+}
+
+.downloadBtn {
+    text-decoration: none;
+    padding: 4px;
+    font-size: 10px;
+    color: white;
+    background: #231f20;
+    border: none;
+    border-radius: 5px;
+}
+
+.uploadBtn {
+    text-decoration: none;
+    padding: 7px 15px;
+    background: #231f20;
+    color: white;
+    border: none;
+    border-radius: 3px;
+}
+
+.line {
+    display: inline;
 }
