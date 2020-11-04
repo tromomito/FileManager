@@ -6,7 +6,7 @@ if (!isset($_SESSION["sessionUsername"])) {
     header("Location:login.php");
     exit;
 }
-
+$favor = '';
 function processDir($path)
 {
     $dir_handle = opendir($path);
@@ -14,20 +14,21 @@ function processDir($path)
         if ($name == '..') {
             $pathArr = explode('/', $path);
             $pathNoLast = array_slice($pathArr, 0, count($pathArr) - 1);
-            echo '<tr><td></td><td></td><td><a href="index.php?path=' . urlencode(implode('/', $pathNoLast)) . '">' . $name . '</a></td><td></td><td></td><td></td><td></td></tr>';
+            echo '<tr><td></td><td></td><td></td><td>[dir]<a href="index.php?path=' . urlencode(implode('/', $pathNoLast)) . '">' . $name . '</a></td><td></td><td></td><td></td><td></td><td></td></tr>';
             continue;
         } elseif ($name == '.') {
             continue;
         }
         if (is_dir($path . '/' . $name)) {
             $nextPath = $path . '/' . $name;
-            echo '<tr><td></td><td><a href="index.php?delPath=' . urlencode($nextPath) . '" class="delete_btn" onclick="return confirm(\'Are you sure?\')">DELETE</a></td><td>[dir] <a href="index.php?path=' . urlencode
-                ($nextPath) . '">' . $name . '</a></td><td>Folder</td><td></td><td></td><td></td></tr>';
+            echo '<tr><td></td><td></td><td><a href="index.php?delPath=' . urlencode($nextPath) . '" class="delete_btn" onclick="return confirm(\'Are you sure?\')">DELETE</a></td><td>[dir] <a href="index.php?path=' . urlencode
+                ($nextPath) . '">' . $name . '</a></td><td><a href="index.php?addToFavor=' . urlencode($nextPath) . '"><img src="images/add_favourite.png" class="imgFav"></a></td><td>Folder</td><td></td><td></td><td></td></tr>';
         } elseif (is_file($path . '/' . $name)) {
             $filePath = $path . '/' . $name;
             $stat = stat($filePath);
-            echo '<tr bgcolor="#f0f8ff"><td><a href="index.php?downPath=' . urlencode($filePath) . '" class="downloadBtn" onclick="return confirm(\'Are you sure you want to download this file?\')">DOWNLOAD</a></td><td><a href="index.php?delPath=' . urlencode($filePath) . '" class="delete_btn" onclick="return confirm(\'Are you sure?\')">DELETE</a></td><td>[file]<a href="' . urlencode
-                ($filePath) . '">' . $name . '</a> </td><td>' . ($stat['size']) . ' b' . '</td><td>' . $stat['gid'] .
+            echo '<tr bgcolor="#efefef"><td></td><td><a href="index.php?downPath=' . urlencode
+                ($filePath) . '" class="downloadBtn" onclick="return confirm(\'Are you sure you want to download this file?\')">DOWNLOAD</a></td><td><a href="index.php?delPath=' . urlencode($filePath) . '" class="delete_btn" onclick="return confirm(\'Are you sure?\')">DELETE</a></td><td>[file]<a href="' . urlencode
+                ($filePath) . '">' . $name . '</a></td><td><a href="index.php?addToFavor=' . urlencode($filePath) . '"><img src="images/add_favourite.png" class="imgFav"></a></td><td>' . ($stat['size']) . ' b' . '</td><td>' . $stat['gid'] .
                 '</td><td>' . date('d.m.Y', $stat['mtime']) . '</td><td>' . $stat['mode'] . '</td></tr>';
         }
     }
@@ -37,6 +38,7 @@ function processDir($path)
 $curPath = isset($_GET['path']) ? urldecode($_GET['path']) : getcwd();
 $delPath = isset($_GET['delPath']) ? urldecode($_GET['delPath']) : false;
 $downPath = isset($_GET['downPath']) ? urldecode($_GET['downPath']) : false;
+$addToFavor = isset($_GET['addToFavor']) ? urldecode($_GET['addToFavor']) : false;
 
 if ($delPath) {
     if (is_dir($delPath)) {
@@ -89,6 +91,14 @@ if (isset($_SESSION["sessionUsername"])) :
 
 endif;
 
+
+if ($addToFavor) {
+    setcookie("favorites", serialize($addToFavor), time()+3600);
+    var_dump($_COOKIE);exit;
+    if (isset($_COOKIE['favorites'])) {
+    $favor .= '<img src="images/star.jpg" class="imgFav">';
+    }
+}
 ?>
 
 <!doctype html>
@@ -120,11 +130,13 @@ endif;
         <input class="uploadBtn" type="submit" name="uploadedFileBtn" value="Upload"><br>
         <hr />
         <br>
-        <table border="4" bordercolor="#000000">
+        <table class="tableFM">
             <tr>
+                <th>Favorites</th>
                 <th>Download</th>
                 <th>Delete</th>
                 <th>File</th>
+                <th>Add to favorites</th>
                 <th>Size Byte</th>
                 <th>Owner</th>
                 <th>Date</th>
@@ -132,11 +144,9 @@ endif;
             </tr>
             <?php processDir($curPath); ?>
         </table>
-        <br>
-        <hr />
     </form>
 </div>
-        <footer class="footer">
+ <footer class="footer">
             <ul class="hr">
                 <li>
                     <a href="https://www.instagram.com/tromomito/"><img src="images/instagram.png" width="30"
