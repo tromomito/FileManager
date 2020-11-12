@@ -31,15 +31,14 @@ if (isset($_POST['password'], $_POST['password2'])) {
 <head>
     <meta charset="utf-8">
     <title>New password File Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="style.css" media="screen" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-          rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div class="header">
 </div>
-<?php echo $text; ?>
 <div class="container mnewpassword">
+    <?php echo $text; ?>
     <div id="newpassword">
         <h1>New password</h1>
         <br>
@@ -50,7 +49,8 @@ if (isset($_POST['password'], $_POST['password2'])) {
                     <input class="input" id="password1" name="password" size="32" type="password" value=""></label></p>
             <p><label for="user_pass2">Repeat password<br>
                     <input class="input" id="password2" name="password2" size="32" type="password" value=""></label></p>
-            <p class="submit"><input class="button" name="change" type="submit" value="change"></p>
+            <button class="btn btn-bg btn-success" name="change" type="submit"><i class="glyphicon
+            glyphicon-ok-sign"></i> change</button>
             <p class="regtext">Remember your password?&nbsp;<a href="login.php">Sign in</a>!</p>
         </form>
     </div>
