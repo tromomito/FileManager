@@ -54,15 +54,14 @@ if (isset($_POST["recovery"])) {
 <head>
     <meta charset="utf-8">
     <title>Recovery password File Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="style.css" media="screen" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-          rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div class="header">
 </div>
-<?php echo $text; ?>
 <div class="container mrecovery">
+    <?php echo $text; ?>
     <div id="recovery">
         <h1>Recovery password</h1>
         <br>
@@ -71,7 +70,8 @@ if (isset($_POST["recovery"])) {
         <form action="recovery.php" id="recoveryform" method="post" name="recoveryform">
             <p><label for="user_email">E-mail<br>
                     <input class="input" id="email" name="email" size="32" type="email" value=""></label></p>
-            <p class="submit"><input class="button" name="recovery" type="submit" value="Recovery"></p>
+            <button class="btn btn-bg btn-success" name="recovery" type="submit"><i class="glyphicon glyphicon-envelope
+"></i> Recovery</button>
             <p class="regtext">Remember your password?&nbsp;<a href="login.php">Sign in</a>!</p>
         </form>
     </div>
