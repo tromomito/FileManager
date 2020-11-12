@@ -38,23 +38,25 @@ if (isset($_POST["login"], $_POST['username'], $_POST['password'])) {
 <head>
     <meta charset="utf-8">
     <title>Login File Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="style.css" media="screen" rel="stylesheet">
 </head>
 <body>
 <div class="header">
 </div>
-<?php echo $text; ?>
 <div class="container mlogin">
+    <?php echo $text; ?>
     <div id="login">
         <h1>Please sign in</h1>
         <form action="" id="loginform" method="post" name="loginform">
             <p><label for="user_login">User name<br>
                     <input class="input" id="username" name="username" size="20"
-                           type="text" value=""></label></p>
+                           type="text"></label></p>
             <p><label for="user_pass">Password<br>
                     <input class="input" id="password" name="password" size="20"
                            type="password" value=""></label></p>
-            <p class="submit"><input class="button" name="login" type="submit" value="Sign in"></p>
+            <button class="btn btn-bg btn-success" name="login" type="submit"><i class="glyphicon glyphicon-log-in
+"></i> Sign in</button>
             <p class="regtext">Not registered yet?&nbsp;<a href="register.php">Registration</a>!</p>
             <p class="regtext">Forgot your password?&nbsp;<a href="recovery.php">Recovery password</a>!</p>
         </form>
