@@ -36,7 +36,11 @@ function processDir($path, $cookie_array)
             $nextPath = $path . '/' . $name;
             echo '
 <tr>
-    <td></td>
+    <td>
+        <a href="index.php?downPathFolder=' . urlencode
+                ($nextPath) . '" class="btn btn-sm btn-success" onclick="return confirm(\'Are you sure you want to download this dir?\')">
+        <i class="glyphicon glyphicon-save-file"></i> DOWNLOAD</a>
+    </td>
     <td>
         <a href="index.php?delPath=' . urlencode($nextPath) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')"><i class="glyphicon glyphicon-trash"></i> DELETE</a>
     </td>
@@ -106,8 +110,26 @@ $delPath = isset($_GET['delPath']) ? urldecode($_GET['delPath']) : false;
 $downPath = isset($_GET['downPath']) ? urldecode($_GET['downPath']) : false;
 $addToFavor = isset($_GET['addToFavor']) ? urldecode($_GET['addToFavor']) : false;
 $renamePath = isset($_GET['renamePath']) ? urldecode($_GET['renamePath']) : false;
+$downPathFolder = isset($_GET['downPathFolder']) ? urldecode($_GET['downPathFolder']) : false;
 
 
+if ($downPathFolder) {
+    if (is_dir($downPathFolder)) {
+        exec("cd $downPathFolder && zip -r $downPathFolder.zip ./*");
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($downPathFolder . '.' . 'zip') . '"');
+        header('Content-Transfer-Encoding: binary');
+        header('Connection: Keep-Alive');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($downPathFolder . '.' . 'zip'));
+        readfile($downPathFolder . '.' . 'zip');
+        unlink($downPathFolder . '.' . 'zip');
+        exit;
+    }
+}
 
 if ($delPath) {
     if (is_dir($delPath)) {
