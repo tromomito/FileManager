@@ -9,12 +9,13 @@ if (!isset($_SESSION["sessionUsername"])) {
 
 function processDir($path, $cookie_array)
 {
+    $showTable ="";
     $dir_handle = opendir($path);
     while (false !== ($name = readdir($dir_handle))) {
         if ($name == '..') {
             $pathArr = explode('/', $path);
             $pathNoLast = array_slice($pathArr, 0, count($pathArr) - 1);
-            echo '
+            $showTable .= '
 <tr>
     <td></td>
     <td></td>
@@ -34,7 +35,7 @@ function processDir($path, $cookie_array)
         }
         if (is_dir($path . '/' . $name)) {
             $nextPath = $path . '/' . $name;
-            echo '
+            $showTable .= '
 <tr>
     <td>
         <a href="index.php?downPath=' . urlencode
@@ -74,7 +75,7 @@ function processDir($path, $cookie_array)
             } else {
                 $size = $size / 1 . ' b';
             }
-            echo '
+            $showTable .= '
 <tr bgcolor="#efefef">
     <td>
         <a href="index.php?downPath=' . urlencode
@@ -103,6 +104,7 @@ function processDir($path, $cookie_array)
         }
     }
     closedir($dir_handle);
+    return $showTable;
 }
 
 $curPath = isset($_GET['path']) ? urldecode($_GET['path']) : getcwd();
@@ -260,7 +262,7 @@ $cookie_array = unserialize($_COOKIE['favorites']);
                 <th>Date</th>
                 <th>Inode</th>
             </tr>
-            <?php processDir($curPath, $cookie_array); ?>
+            <?php echo processDir($curPath, $cookie_array); ?>
         </table>
     </form>
 </div>
